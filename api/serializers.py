@@ -1,3 +1,4 @@
+from django.shortcuts import get_object_or_404
 from rest_framework import serializers
 from .models import Art
 from .models import Author
@@ -5,11 +6,26 @@ from .models import Location
 from .models import Gallery
 from .models import GalleryAuthor
 
-
 class ArtSerializerList(serializers.ModelSerializer):
     class Meta:
         model = Art
         fields = ['id', 'title', 'author', 'year', 'type', 'material', 'gallery']
+
+
+class ArtForAuthorSerializer(serializers.ModelSerializer):
+    id = serializers.IntegerField()
+
+    def create(self, validated_data):
+        art_id = validated_data['id']
+        art = get_object_or_404(Art, pk=art_id)
+        art.author = validated_data['author']
+        db = validated_data.get('using', None)
+        art.save(using=db)
+        return art
+
+    class Meta:
+        model = Art
+        fields = ['id']
 
 
 class AuthorSerializerList(serializers.ModelSerializer):
@@ -36,16 +52,6 @@ class LocationSerializerList(serializers.ModelSerializer):
     class Meta:
         model = Location
         fields = ['id', 'country', 'city']
-
-
-class GallerySerializer(serializers.ModelSerializer):
-    arts = ArtSerializerList(read_only=True, many=True)
-    location = LocationSerializerList(read_only=True)
-    members = AuthorSerializerList(read_only=True, many=True)
-
-    class Meta:
-        model = Gallery
-        fields = ['id', 'name', 'location', 'theme', 'street', 'capacity', 'arts', 'members']
 
 
 class ArtSerializer(serializers.ModelSerializer):
@@ -100,7 +106,15 @@ class GalleryForAuthorSerializerList(serializers.ModelSerializer):
 
     class Meta:
         model = GalleryAuthor
-        fields = ['id', 'gallery', 'starting_exposition', 'ending_exposition', 'nb_participants', 'invited']
+        fields = ['gallery', 'starting_exposition', 'ending_exposition', 'nb_participants', 'invited']
+
+
+class GalleryForAuthorSerializer(serializers.ModelSerializer):
+    author = AuthorSerializerList(read_only=True)
+
+    class Meta:
+        model = GalleryAuthor
+        fields = ['author', 'starting_exposition', 'ending_exposition', 'nb_participants', 'invited']
 
 
 class AuthorSerializer(serializers.ModelSerializer):
@@ -110,6 +124,17 @@ class AuthorSerializer(serializers.ModelSerializer):
     class Meta:
         model = Author
         fields = ['id', 'name', 'date_birth', 'date_death', 'period', 'originated', 'arts', 'galleries']
+
+
+class GallerySerializer(serializers.ModelSerializer):
+    arts = ArtSerializerList(read_only=True, many=True)
+    location = LocationSerializerList(read_only=True)
+    authors = GalleryForAuthorSerializer(read_only=True, many=True)
+
+    class Meta:
+        model = Gallery
+        fields = ['id', 'name', 'location', 'theme', 'street', 'capacity', 'arts', 'authors']
+
 
 
 

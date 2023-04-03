@@ -1,12 +1,13 @@
 from django.db.models import Avg, F, Count
-from rest_framework import generics, status
+from django.shortcuts import get_object_or_404
+from rest_framework import generics, status, views
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
 from .models import Art, Author, Location, Gallery, GalleryAuthor
 from .serializers import ArtSerializerList, ArtSerializer, AuthorSerializer, LocationSerializer, GallerySerializer, AuthorSerializerList, GallerySerializerList, LocationSerializerList
-from .serializers import GalleryAuthorSerializer, GalleryAuthorSerializerList, AuthorGalleryPeriodReport, GalleryNbAuthors
-
+from .serializers import GalleryAuthorSerializer, GalleryAuthorSerializerList, AuthorGalleryPeriodReport, GalleryNbAuthors, GalleryForAuthorSerializerList
+from .serializers import ArtForAuthorSerializer
 
 class GalleryAuthorList(generics.ListCreateAPIView):
     queryset = GalleryAuthor.objects.all()
@@ -32,6 +33,15 @@ class AuthorList(generics.ListCreateAPIView):
     queryset = Author.objects.all()
     serializer_class = AuthorSerializerList
 
+class ArtForAuthor(views.APIView):
+    def post(self, request, pk):
+        serializer = ArtForAuthorSerializer(data=request.data, many=True)
+        author = get_object_or_404(Author, id=pk)
+        serializer.context['author'] = author
+        if serializer.is_valid():
+            serializer.save(author=author, using='')
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_204_NO_CONTENT)
 
 class AuthorDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Author.objects.all()
@@ -78,60 +88,7 @@ class GalleryByAuthor(generics.ListAPIView):
         return queryset
 
 
-@api_view(['GET', 'POST'])
-def snippet_list(request):
-    """
-    List all code snippets, or create a new snippet.
-    """
-    if request.method == 'GET':
-        snippets = Snippet.objects.all()
-        serializer = SnippetSerializer(snippets, many=True)
-        return Response(serializer.data)
-
-
-    elif request.method == 'POST':
-
-        serializer = AuthorSerializerList(data=request.data)
-
-        if serializer.is_valid():
-            serializer.save()
-
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
-@api_view(['GET', 'PUT', 'DELETE'])
-def author_from_gallery(request, pk, pk2):
-    try:
-        au = GalleryAuthor.objects.get(gallery=pk2)
-        author = Author.objects.get(id=au.author.id)
-    except Author.DoesNotExist:
-        return Response(status=status.HTTP_404_NOT_FOUND)
-
-    if request.method == 'GET':
-        serializer = AuthorSerializerList(author)
-        return Response(serializer.data)
-
-    elif request.method == 'PUT':
-        serializer = AuthorSerializerList(author, data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-    elif request.method == 'DELETE':
-        author.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
-
-
-
-
-
-
-
-
-
-
-
+class AuthorFromGalleryDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = GalleryAuthor.objects.all()
+    serializer_class = GalleryForAuthorSerializerList
 
