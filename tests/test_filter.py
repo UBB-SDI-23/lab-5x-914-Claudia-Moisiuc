@@ -22,13 +22,13 @@ class ArtByYearTest(APITestCase):
         )
 
     def test_art_by_year(self):
-        response = self.client.get('/api/filter/')
+        response = self.client.get('/api/art-filter/')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(len(response.data), 2)
         self.assertEqual(response.data[0]['title'], 'The Starry Night1')
 
     def test_art_by_year_no_result(self):
-        response = self.client.get('/api/filter/?var=1895')
+        response = self.client.get('/api/art-filter/?var=1895')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(len(response.data), 0)
 

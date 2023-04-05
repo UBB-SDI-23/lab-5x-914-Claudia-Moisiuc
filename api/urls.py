@@ -1,6 +1,6 @@
 from django.urls import path
 from .views import ArtList, ArtDetail, ArtForAuthor,AuthorFromGalleryDetail, GalleryByAuthor, AuthorDetail, AuthorList, AuthorWithPeriod, LocationList, LocationDetail, GalleryList, GalleryDetail, GalleryAuthorList, GalleryAuthorDetail
-from .controller import ArtbyYear
+from .controller import ArtbyYear, LocationFilter
 from api import views
 
 urlpatterns = [
@@ -18,5 +18,6 @@ urlpatterns = [
     path('gallery/report/', GalleryByAuthor.as_view()),
     path('galleryauthor/', GalleryAuthorList.as_view()),
     path('galleryauthor/<int:pk>/', GalleryAuthorDetail.as_view()),
-    path('filter/', ArtbyYear.as_view())
+    path('art-filter/', ArtbyYear.as_view()),
+    path('location-filter/', LocationFilter.as_view())
 ]
