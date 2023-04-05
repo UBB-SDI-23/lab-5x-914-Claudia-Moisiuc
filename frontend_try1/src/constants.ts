@@ -1,3 +1,3 @@
-const DEV_BACKEND_API_URL = "http://13.50.225.173/api"
+const DEV_BACKEND_API_URL = "http://13.53.84.177/api"
 
 export const BACKEND_API_URL = DEV_BACKEND_API_URL;
