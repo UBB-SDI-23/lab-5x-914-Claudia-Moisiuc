@@ -28,7 +28,7 @@ export const ArtFilter = () => {
     const [art, setArt] = useState([]);
 
     useEffect(() => {
-        fetch(`${BACKEND_API_URL}/art-filter/`)
+        fetch("http://ec2-13-50-101-56.eu-north-1.compute.amazonaws.com/api/art-filter/")
             .then(res => res.json())
             .then(data => {
                 setArt(data);
