@@ -28,7 +28,7 @@ export const LocationShowAll = () => {
     const [locations, setLocation] = useState<Location[]>([]);
 
     useEffect(() => {
-        fetch("http://ec2-13-50-101-56.eu-north-1.compute.amazonaws.com/api/location/")
+        fetch(`${BACKEND_API_URL}/location/`)
             .then((response) => response.json())
             .then((data) => {
                 console.log(data);
