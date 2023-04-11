@@ -21,15 +21,13 @@ import {Link} from "react-router-dom";
 import ReadMoreIcon from "@mui/icons-material/ReadMore";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
-const proxyUrl = 'https://your-proxy-server.com/proxy.php?url=';
 
 export const LocationShowAll = () => {
     const [loading, setLoading] = useState(false);
     const [locations, setLocation] = useState<Location[]>([]);
-    const apiUrl = `${BACKEND_API_URL}/location/`
 
     useEffect(() => {
-        fetch(proxyUrl + apiUrl)
+        fetch(`${BACKEND_API_URL}/location/`)
             .then((response) => response.json())
             .then((data) => {
                 console.log(data);
