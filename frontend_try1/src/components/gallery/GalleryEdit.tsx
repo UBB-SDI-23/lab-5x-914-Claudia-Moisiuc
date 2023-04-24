@@ -3,37 +3,41 @@ import axios from "axios";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { BACKEND_API_URL } from "../../constants";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import {Location} from "../../models/Location";
 import { useEffect, useState } from "react";
+import {Gallery} from "../../models/Gallery";
 
 
-export const LocationEdit = () => {
-    const { locationId } = useParams();
+export const GalleryEdit = () => {
+    const { galleryId } = useParams();
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
 
-    const [location, setLocation] = useState<Location>({
+    const [gallery, setGallery] = useState<Gallery>({
         id: 0,
-        country: "",
-        city: "",
-        to_visit: ""
+        name: "",
+        theme: "",
+        street: "",
+        capacity: 0,
+        location: 1,
     });
 
     useEffect(() => {
         setLoading(true);
-        axios.get(`${BACKEND_API_URL}/locations/${locationId}/`)
+        axios.get(`${BACKEND_API_URL}/gallery/${galleryId}/`)
             .then((response) => {
-                setLocation(response.data);
+                setGallery(response.data);
                 setLoading(false);
             })
             .catch((error) => console.log(error));
     }, []);
 
-    const updateLocation = async (event: { preventDefault: () => void }) => {
+
+    const updateGallery = async (event: { preventDefault: () => void }) => {
         event.preventDefault();
+        console.log(gallery.location)
         try {
-            await axios.put(`${BACKEND_API_URL}/locations/${locationId}/`, location);
-            navigate("/locations/");
+            await axios.put(`${BACKEND_API_URL}/gallery/${galleryId}/`, gallery);
+            navigate("/gallery/");
         } catch (error) {
             console.log(error);
         }
@@ -41,60 +45,73 @@ export const LocationEdit = () => {
 
     const handleCancel = (event: { preventDefault: () => void }) => {
         event.preventDefault();
-        navigate("/locations/");
+        navigate("/gallery/");
     };
 
     return (
         <Container>
             <Card>
                 <CardContent>
-                    <IconButton component={Link} sx={{ mr: 3 }} to={`/locations/`}>
+                    <IconButton component={Link} sx={{ mr: 3 }} to={`/gallery/`}>
                         <ArrowBackIcon />
                     </IconButton>{" "}
-                    <form onSubmit={updateLocation} style={{ display: "flex", flexDirection: "column", padding: "8px" }}>
+                    <form onSubmit={updateGallery} style={{ display: "flex", flexDirection: "column", padding: "8px" }}>
                         <Container sx={{ padding: "3px" }} style={{ display: "flex", flexDirection: "row", justifyContent: "space-around" }}>
                             <FormLabel style={{ marginTop: "15px", fontSize: "18px" }}>
-                                Country
+                                Name
                             </FormLabel>
                             <TextField
-                                id="country"
-                                label={location.country}
-                                defaultValue={location.country}
+                                id="name"
+                                label={gallery.name}
+                                defaultValue={gallery.name}
                                 variant="outlined"
-                                onChange={(event) => setLocation({ ...location, country: event.target.value })}
+                                onChange={(event) => setGallery({ ...gallery, name: event.target.value })}
                             />
                         </Container>
 
                         <Container sx={{ padding: "3px" }} style={{ display: "flex", flexDirection: "row", justifyContent: "space-around" }}>
                             <FormLabel style={{ marginTop: "15px", fontSize: "18px" }}>
-                                City
+                                Theme
                             </FormLabel>
                             <TextField
-                                id="city"
-                                label={location.city}
-                                defaultValue={location.city}
+                                id="theme"
+                                label={gallery.theme}
+                                defaultValue={gallery.theme}
                                 variant="outlined"
-                                onChange={(event) => setLocation({ ...location, city: event.target.value })}
+                                onChange={(event) => setGallery({ ...gallery, theme: event.target.value })}
                             />
                         </Container>
 
                         <Container sx={{ padding: "3px" }} style={{ display: "flex", flexDirection: "row", justifyContent: "space-around" }}>
                             <FormLabel style={{ marginTop: "15px", fontSize: "18px" }}>
-                                Description
+                                Street
                             </FormLabel>
                             <TextField
-                                id="to_visit"
-                                label={location.to_visit}
-                                defaultValue={location.to_visit}
+                                id="street"
+                                label={gallery.street}
+                                defaultValue={gallery.street}
                                 variant="outlined"
-                                onChange={(event) => setLocation({ ...location, to_visit: event.target.value })}
+                                onChange={(event) => setGallery({ ...gallery, street: event.target.value })}
+                            />
+                        </Container>
+
+                        <Container sx={{ padding: "3px" }} style={{ display: "flex", flexDirection: "row", justifyContent: "space-around" }}>
+                            <FormLabel style={{ marginTop: "15px", fontSize: "18px" }}>
+                                Capacity
+                            </FormLabel>
+                            <TextField
+                                id="capacity"
+                                label={gallery.capacity}
+                                defaultValue={gallery.capacity}
+                                variant="outlined"
+                                onChange={(event) => setGallery({ ...gallery, capacity: parseInt(event.target.value) })}
                             />
                         </Container>
 
                     </form>
                 </CardContent>
                 <CardActions sx={{ justifyContent: "center" }}>
-                    <Button type="submit" onClick={updateLocation} variant="contained" sx={{ backgroundColor: colors.green[500] }}>Update</Button>
+                    <Button type="submit" onClick={updateGallery} variant="contained" sx={{ backgroundColor: colors.green[500] }}>Update</Button>
                     <Button onClick={handleCancel} variant="contained" sx={{ backgroundColor: colors.green[500] }}>Cancel</Button>
                 </CardActions>
             </Card>

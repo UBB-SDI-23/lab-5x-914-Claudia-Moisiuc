@@ -8,19 +8,11 @@ import {
     TableBody,
     CircularProgress,
     Container,
-    IconButton,
-    Tooltip,
     Button,
 } from "@mui/material";
-
-import EditIcon from "@mui/icons-material/Edit";
-import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import {useEffect, useState} from "react";
-import {Link} from "react-router-dom";
-import AddIcon from "@mui/icons-material/Add";
 import {BACKEND_API_URL} from "../../constants";
 import {Art} from "../../models/Art";
-import {Location} from "../../models/Location";
 
 
 export const ArtFilter = () => {

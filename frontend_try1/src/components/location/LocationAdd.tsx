@@ -2,26 +2,27 @@ import {useState} from "react";
 import {Location} from "../../models/Location";
 import {BACKEND_API_URL} from "../../constants";
 import axios from "axios";
-import { Button, Card, CardActions, CardContent, IconButton, TextField } from "@mui/material";
+import { Button, Card, CardContent, IconButton, TextField } from "@mui/material";
 import { Container } from "@mui/system";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate} from "react-router-dom";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
 
-export const AddLocation = () =>{
+export const LocationAdd = () =>{
     const navigate = useNavigate();
 
     const [location, setLocation] = useState<Location>({
         id: 0,
         country: "",
-        city: ""
+        city: "",
+        to_visit: ""
     });
 
     const addLocation = async (event: {preventDefault: () => void}) =>{
         event.preventDefault();
         try{
-            await axios.post(`${BACKEND_API_URL}/location/`, location);
-            navigate("/location");
+            await axios.post(`${BACKEND_API_URL}/locations/`, location);
+            navigate("/locations");
         }catch (error){
             console.log(error);
         }
@@ -31,7 +32,7 @@ export const AddLocation = () =>{
         <Container>
             <Card>
                 <CardContent>
-                    <IconButton component = {Link} sx={{ mr: 3}} to ={`/location/`}>
+                    <IconButton component = {Link} sx={{ mr: 3}} to ={`/locations/`}>
                         <ArrowBackIcon />
                     </IconButton>{" "}
                     <form onSubmit={addLocation}>
@@ -51,8 +52,16 @@ export const AddLocation = () =>{
 							sx={{ mb: 2 }}
 							onChange={(event) => setLocation({ ...location, city: event.target.value })}
 						/>
+                        <TextField
+							id="to_visit"
+							label="Description"
+							variant="outlined"
+							fullWidth
+							sx={{ mb: 2 }}
+							onChange={(event) => setLocation({ ...location, to_visit: event.target.value })}
+						/>
 
-						<Button type="submit">Add Course</Button>
+						<Button type="submit">Add Location</Button>
 					</form>
                 </CardContent>
             </Card>

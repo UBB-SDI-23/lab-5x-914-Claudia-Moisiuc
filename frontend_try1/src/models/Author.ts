@@ -1,5 +1,5 @@
 import {Art} from "./Art";
-import {Gallery} from "./Gallery";
+import {GalleryAuthor} from "./GalleryAuthor";
 
 export interface Author {
     id: number;
@@ -9,5 +9,5 @@ export interface Author {
     period: string;
     originated: string;
     arts?: Art[];
-    galleries?: Gallery[];
+    galleries?: GalleryAuthor[];
 }

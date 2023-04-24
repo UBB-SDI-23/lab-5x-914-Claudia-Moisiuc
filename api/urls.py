@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import ArtList, ArtDetail, ArtForAuthor,AuthorFromGalleryDetail, GalleryByAuthor, AuthorDetail, AuthorList, AuthorWithPeriod, LocationList, LocationDetail, GalleryList, GalleryDetail, GalleryAuthorList, GalleryAuthorDetail
+from .views import ArtList, ArtDetail, ArtForAuthor, LocationViewForAutocomplete, AuthorFromGalleryDetail, GalleryByAuthor, AuthorDetail, AuthorList, AuthorWithPeriod, LocationList, LocationDetail, GalleryList, GalleryDetail, GalleryAuthorList, GalleryAuthorDetail
 from .controller import ArtbyYear, LocationFilter
 from api import views
 
@@ -10,8 +10,8 @@ urlpatterns = [
     path('author/<int:pk>/', AuthorDetail.as_view()),
     path('author/<int:pk>/art/', ArtForAuthor.as_view()),
     path('author/report/', AuthorWithPeriod.as_view()),
-    path('location/', LocationList.as_view()),
-    path('location/<int:pk>/', LocationDetail.as_view()),
+    path('locations/', LocationList.as_view()),
+    path('locations/<int:pk>/', LocationDetail.as_view()),
     path('gallery/', GalleryList.as_view()),
     path('gallery/<int:pk>/', GalleryDetail.as_view()),
     path('author/<int:pk>/gallery/', AuthorFromGalleryDetail.as_view()),
@@ -19,5 +19,6 @@ urlpatterns = [
     path('galleryauthor/', GalleryAuthorList.as_view()),
     path('galleryauthor/<int:pk>/', GalleryAuthorDetail.as_view()),
     path('art-filter/', ArtbyYear.as_view()),
-    path('location-filter/', LocationFilter.as_view())
+    path('location-filter/', LocationFilter.as_view()),
+    path("locations/autocomplete/<int:pk>/", LocationViewForAutocomplete.as_view()),
 ]

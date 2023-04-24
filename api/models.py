@@ -29,7 +29,7 @@ def not_current_date(value):
 
 
 def capacity_validator(value):
-    if value < 1000:
+    if value < 10000:
         return value
     else:
         raise ValidationError("This field does not accept values over 1000.")
@@ -57,6 +57,7 @@ class Author(models.Model):
 class Location(models.Model):
     country = models.CharField(max_length=100)
     city = models.CharField(max_length=100)
+    to_visit = models.CharField(max_length=100000, default='No locations to visit yet.')
 
 
 '''class Theme(models.Model):
@@ -112,8 +113,8 @@ class Art(models.Model):
 class GalleryAuthor(models.Model):
     author = models.ForeignKey(Author, related_name='galleries', on_delete=models.CASCADE)
     gallery = models.ForeignKey(Gallery, related_name='authors', on_delete=models.CASCADE)
-    starting_exposition = models.DateField(auto_now_add=False)
-    ending_exposition = models.DateField(auto_now_add=False)
+    starting_exposition = models.CharField(max_length=100)
+    ending_exposition = models.CharField(max_length=100)
     nb_participants = models.IntegerField(default=0, validators=[integer_poz_validator])
     invited = models.IntegerField(default=0, validators=[integer_poz_validator])
 

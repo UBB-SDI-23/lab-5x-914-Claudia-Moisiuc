@@ -45,18 +45,18 @@ class LocationSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Location
-        fields = ['id', 'country', 'city', 'galleries']
+        fields = ['id', 'country', 'city', 'to_visit', 'galleries']
 
 
 class LocationSerializerList(serializers.ModelSerializer):
     class Meta:
         model = Location
-        fields = ['id', 'country', 'city']
+        fields = ['id', 'country', 'to_visit', 'city']
 
 
 class ArtSerializer(serializers.ModelSerializer):
     author = AuthorSerializerList(read_only=True)
-    gallery = GallerySerializerList(read_only=True)
+    gallery = GallerySerializerList()
 
     class Meta:
         model = Art
@@ -70,8 +70,8 @@ class GalleryAuthorSerializer(serializers.ModelSerializer):
 
 
 class GalleryAuthorSerializerList(serializers.ModelSerializer):
-    author = AuthorSerializerList(read_only=True)
-    gallery = GallerySerializerList(read_only=True)
+    author = AuthorSerializerList()
+    gallery = GallerySerializerList()
 
     class Meta:
         model = GalleryAuthor
@@ -102,7 +102,7 @@ class GalleryNbAuthors(serializers.ModelSerializer):
    #     fields = ['gallery']
 
 class GalleryForAuthorSerializerList(serializers.ModelSerializer):
-    gallery = GallerySerializerList(read_only=True)
+    gallery = GallerySerializerList()
 
     class Meta:
         model = GalleryAuthor
@@ -110,7 +110,7 @@ class GalleryForAuthorSerializerList(serializers.ModelSerializer):
 
 
 class GalleryForAuthorSerializer(serializers.ModelSerializer):
-    author = AuthorSerializerList(read_only=True)
+    author = AuthorSerializerList()
 
     class Meta:
         model = GalleryAuthor

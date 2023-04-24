@@ -11,27 +11,53 @@ export const AppMenu = () => {
 		<Box sx={{ flexGrow: 1 }}>
 			<AppBar position="static" sx={{ marginBottom: "20px" }}>
 				<Toolbar>
-					<IconButton
-						component={Link}
-						to="/"
-						size="large"
-						edge="start"
-						color="inherit"
-						aria-label="school"
-						sx={{ mr: 2 }}>
-						<SchoolIcon />
-					</IconButton>
 					<Typography variant="h6" component="div" sx={{ mr: 5 }}>
-						Location management
+						Gallery management
 					</Typography>
 					<Button
-						variant={path.startsWith("/location/") ? "outlined" : "text"}
-						to="/location"
+						variant={path.startsWith("/locations/") ? "outlined" : "text"}
+						to="/locations"
 						component={Link}
 						color="inherit"
 						sx={{ mr: 5 }}
 						startIcon={<LocalLibraryIcon />}>
 						Locations
+					</Button>
+					<Button
+						variant={path.startsWith("/gallery/") ? "outlined" : "text"}
+						to="/gallery"
+						component={Link}
+						color="inherit"
+						sx={{ mr: 5 }}
+						startIcon={<LocalLibraryIcon />}>
+						Galleries
+					</Button>
+					<Button
+						variant={path.startsWith("/author/") ? "outlined" : "text"}
+						to="/author"
+						component={Link}
+						color="inherit"
+						sx={{ mr: 5 }}
+						startIcon={<LocalLibraryIcon />}>
+						Authors
+					</Button>
+					<Button
+						variant={path.startsWith("/art/") ? "outlined" : "text"}
+						to="/art"
+						component={Link}
+						color="inherit"
+						sx={{ mr: 5 }}
+						startIcon={<LocalLibraryIcon />}>
+						Arts
+					</Button>
+					<Button
+						variant={path.startsWith("/galleryauthor/") ? "outlined" : "text"}
+						to="/galleryauthor"
+						component={Link}
+						color="inherit"
+						sx={{ mr: 5 }}
+						startIcon={<LocalLibraryIcon />}>
+						Galleries and Authors
 					</Button>
 					<Button
 						variant={path.startsWith("/art-filter/") ? "outlined" : "text"}

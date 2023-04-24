@@ -17,7 +17,7 @@ export const LocationDetails = () => {
 			// TODO: use axios instead of fetch
 			// TODO: handle errors
 			// TODO: handle loading state
-			const response = await fetch(`${BACKEND_API_URL}/location/${locationId}`);
+			const response = await fetch(`${BACKEND_API_URL}/locations/${locationId}`);
 			const location = await response.json();
 			setCourse(location);
 		};
@@ -28,12 +28,14 @@ export const LocationDetails = () => {
 		<Container>
 			<Card>
 				<CardContent>
-					<IconButton component={Link} sx={{ mr: 3 }} to={`/location/`}>
+					<IconButton component={Link} sx={{ mr: 3 }} to={`/locations/`}>
 						<ArrowBackIcon />
 					</IconButton>{" "}
 					<h1>Location Details</h1>
 					<p>Location Country: {location?.country}</p>
 					<p>Location City: {location?.city}</p>
+					<p>Location Description:</p>
+					<p>{location?.to_visit}</p>
 					<p>Location Galleries:</p>
 					<ul>
 						{location?.galleries?.map((gallery) => (
@@ -42,11 +44,11 @@ export const LocationDetails = () => {
 					</ul>
 				</CardContent>
 				<CardActions>
-					<IconButton component={Link} sx={{ mr: 3 }} to={`/location/${locationId}/edit`}>
+					<IconButton component={Link} sx={{ mr: 3 }} to={`/locations/${locationId}/edit`}>
 						<EditIcon />
 					</IconButton>
 
-					<IconButton component={Link} sx={{ mr: 3 }} to={`/location/${locationId}/delete`}>
+					<IconButton component={Link} sx={{ mr: 3 }} to={`/locations/${locationId}/delete`}>
 						<DeleteForeverIcon sx={{ color: "red" }} />
 					</IconButton>
 				</CardActions>

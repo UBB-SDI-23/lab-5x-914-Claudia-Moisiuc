@@ -1,12 +1,13 @@
 import {Location} from "./Location";
-import {Author} from "./Author";
+import {GalleryAuthor} from "./GalleryAuthor";
 
 export interface Gallery{
     id: number;
     name: string;
-    location: Location;
+    location?: Location | number;
+    location_id?: number;
     theme: string;
     street: string;
     capacity: number;
-    authors?: Author[];
+    authors?: GalleryAuthor[];
 }

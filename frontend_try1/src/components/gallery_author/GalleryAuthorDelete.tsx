@@ -5,29 +5,29 @@ import axios from "axios";
 import {BACKEND_API_URL} from "../../constants";
 
 
-export const LocationDelete = () => {
-    const {locationId} = useParams();
+export const GalleryAuthorDelete = () => {
+    const {galleryauthorId} = useParams();
     const navigate = useNavigate();
 
     const handleDelete = async (event: { preventDefault: () => void }) => {
         event.preventDefault();
-        await axios.delete(`${BACKEND_API_URL}/locations/${locationId}`);
-        navigate("/locations/");
+        await axios.delete(`${BACKEND_API_URL}/galleryauthor/${galleryauthorId}`);
+        navigate("/galleryauthor/");
     };
 
     const handleCancel = (event: {preventDefault: () => void }) => {
         event.preventDefault();
-        navigate("/locations/");
+        navigate("/galleryauthor/");
     };
 
     return(
         <Container>
             <Card>
                 <CardContent>
-                    <IconButton component={Link} sx={{ mr: 3 }} to={`/locations/`}>
+                    <IconButton component={Link} sx={{ mr: 3 }} to={`/galleryauthor/`}>
 						<ArrowBackIcon />
 					</IconButton>{" "}
-					Are you sure you want to delete this location? This cannot be undone!
+					Are you sure you want to delete this gallery and author? This cannot be undone!
                 </CardContent>
                 <CardActions>
 					<Button onClick={handleDelete}>Delete it</Button>

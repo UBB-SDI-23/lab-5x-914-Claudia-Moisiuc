@@ -1,5 +1,4 @@
 import {useEffect, useState} from "react";
-import {Location} from "../../models/Location";
 import {BACKEND_API_URL} from "../../constants";
 import {
     TableContainer,
@@ -16,67 +15,75 @@ import AddIcon from "@mui/icons-material/Add";
 import ReadMoreIcon from "@mui/icons-material/ReadMore";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
+import {Art} from "../../models/Art";
 
-export const LocationShowAll = () => {
+export const ArtShowAll = () => {
     const [loading, setLoading] = useState(false);
-    const [locations, setLocation] = useState<Location[]>([]);
+    const [arts, setArt] = useState<Art[]>([]);
 
     useEffect(() => {
-        fetch(`${BACKEND_API_URL}/locations/`)
+        fetch(`${BACKEND_API_URL}/art/`)
             .then((response) => response.json())
             .then((data) => {
                 console.log(data);
-                setLocation(data);
+                setArt(data);
             });
     }, []);
 
-    if (locations.length == 0) {
-        return <div>No locations</div>;
+    if (arts.length == 0) {
+        return <div>No arts</div>;
     }
 
     return (
         <div>
-            <h1>Locations List</h1>
-            {!loading && locations.length === 0 && <p>No locations found</p>}
+            <h1>Arts List</h1>
+            {!loading && arts.length === 0 && <p>No arts found</p>}
             {!loading && (
                 <IconButton
                     sx={{mr: 3}}
                     onClick={() => {
-                        window.location.href = '/locations/add/';
+                        window.location.href = '/art/add/';
                     }}
                 >
-                    <Tooltip title="Add a new location" arrow>
+                    <Tooltip title="Add a new art" arrow>
                         <AddIcon color="primary"/>
                     </Tooltip>
                 </IconButton>
             )}
-            {!loading && locations.length > 0 && (
+            {!loading && arts.length > 0 && (
                 <TableContainer component={Paper}>
                     <Table sx={{minWidth: 650}} aria-label="simple table">
+
                         <TableHead>
                             <TableRow>
                                 <TableCell align="center">ID</TableCell>
-                                <TableCell align="center">Country</TableCell>
-                                <TableCell align="center">City</TableCell>
-                                <TableCell align="center">Description</TableCell>
+                                <TableCell align="center">Title</TableCell>
+                                <TableCell align="center">Author</TableCell>
+                                <TableCell align="center">Year</TableCell>
+                                <TableCell align="center">Type</TableCell>
+                                <TableCell align="center">Material</TableCell>
+                                <TableCell align="center">Gallery</TableCell>
                                 <TableCell align="center">Operations</TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {locations.map((location: Location, index) => (
+                            {arts.map((art: Art, index) => (
                                 <tr key={index}>
                                     <TableCell align="center">{index}</TableCell>
-                                    <TableCell align="center">{location.country}</TableCell>
-                                    <TableCell align="center">{location.city}</TableCell>
-                                    <TableCell align="center">{location.to_visit}</TableCell>
+                                    <TableCell align="center">{art.title}</TableCell>
+                                    <TableCell align="center">{art.author}</TableCell>
+                                    <TableCell align="center">{art.year}</TableCell>
+                                    <TableCell align="center">{art.type}</TableCell>
+                                    <TableCell align="center">{art.material}</TableCell>
+                                    <TableCell align="center">{art.gallery}</TableCell>
                                     <TableCell align="right">
                                         <IconButton
                                             sx={{mr: 3}}
                                             onClick={() => {
-                                                window.location.href = `/locations/${location.id}/details`;
+                                                window.location.href = `/art/${art.id}/details`;
                                             }}
                                         >
-                                            <Tooltip title="View location details" arrow>
+                                            <Tooltip title="View art details" arrow>
                                                 <ReadMoreIcon color="primary"/>
                                             </Tooltip>
                                         </IconButton>
@@ -84,7 +91,7 @@ export const LocationShowAll = () => {
                                         <IconButton
                                             sx={{mr: 3}}
                                             onClick={() => {
-                                                window.location.href = `/locations/${location.id}/edit`;
+                                                window.location.href = `/art/${art.id}/edit`;
                                             }}
                                         >
                                             <EditIcon/>
@@ -93,7 +100,7 @@ export const LocationShowAll = () => {
                                         <IconButton
                                             sx={{mr: 3}}
                                             onClick={() => {
-                                                window.location.href = `/locations/${location.id}/delete`;
+                                                window.location.href = `/art/${art.id}/delete`;
                                             }}
                                         >
                                             <DeleteForeverIcon sx={{color: "red"}} />

@@ -5,4 +5,5 @@ export interface Location{
     country: string;
     city: string;
     galleries?: Gallery[];
+    to_visit: string;
 }

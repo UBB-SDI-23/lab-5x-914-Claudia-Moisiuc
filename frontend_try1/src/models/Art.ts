@@ -4,9 +4,9 @@ import {Author} from "./Author";
 export interface Art{
     id: number;
     title: string;
-    author: Author;
+    author: Author | number;
     year: number;
     type: string;
     material: string;
-    gallery: Gallery;
+    gallery: number | Gallery;
 }
