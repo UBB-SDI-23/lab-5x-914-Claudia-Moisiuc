@@ -32,6 +32,7 @@ export const GalleryAdd = () => {
             setLastGetLocationsCall((prev) => prev + 1);
             console.log("giees");
             console.log(query);
+            console.log(gallery);
             const response = await axios.get(
                 `${BACKEND_API_URL}/locations/autocomplete/?query=${query}`
             );
