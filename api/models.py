@@ -37,8 +37,8 @@ def capacity_validator(value):
 
 class Author(models.Model):
     name = models.CharField(max_length=100)
-    date_birth = models.DateField(auto_now_add=False, validators=[not_current_date])
-    date_death = models.DateField(auto_now_add=False)
+    date_birth = models.CharField(max_length=100)
+    date_death = models.CharField(max_length=100)
     period = models.CharField(max_length=100)
     originated = models.CharField(max_length=100)
 
