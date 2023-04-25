@@ -71,11 +71,11 @@ export const ArtShowAll = () => {
                                 <tr key={index}>
                                     <TableCell align="center">{index}</TableCell>
                                     <TableCell align="center">{art.title}</TableCell>
-                                    <TableCell align="center">{art.author}</TableCell>
+                                    <TableCell align="center">{art.author.toString()}</TableCell>
                                     <TableCell align="center">{art.year}</TableCell>
                                     <TableCell align="center">{art.type}</TableCell>
                                     <TableCell align="center">{art.material}</TableCell>
-                                    <TableCell align="center">{art.gallery}</TableCell>
+                                    <TableCell align="center">{art.gallery.toString()}</TableCell>
                                     <TableCell align="right">
                                         <IconButton
                                             sx={{mr: 3}}
