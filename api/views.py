@@ -1,5 +1,6 @@
 from django.db.models import Avg, F, Count
 from django.shortcuts import get_object_or_404
+from drf_spectacular.utils import extend_schema
 from rest_framework import generics, status, views
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
@@ -11,6 +12,7 @@ from .serializers import ArtSerializerList, ArtSerializer, AuthorSerializer, Loc
 from .serializers import GalleryAuthorSerializer, GalleryAuthorSerializerList, AuthorGalleryPeriodReport, \
     GalleryNbAuthors, GalleryForAuthorSerializerList
 from .serializers import ArtForAuthorSerializer
+from django.db.models import Q
 
 
 class GalleryAuthorList(generics.ListCreateAPIView):
@@ -99,6 +101,46 @@ class AuthorFromGalleryDetail(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = GalleryForAuthorSerializerList
 
 
-class LocationViewForAutocomplete(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Location.objects.all()
-    serializer_class = LocationSerializerList
+class LocationViewForAutocomplete(APIView):
+    @extend_schema(request=None, responses=LocationSerializer)
+    def get(self, request):
+        query = request.query_params.get('query', None)
+        if query:
+            locations = Location.objects.filter(Q(city__icontains=query) | Q(country__icontains=query) | Q(
+                city__icontains=query.split()[0], country__icontains=query.split()[-1]) | Q(
+                city__icontains=query.split()[-1], country__icontains=query.split()[0]))[:10]
+        else:
+            locations = Location.objects.all()[:10]
+
+        serialized_locations = LocationSerializer(locations, many=True)
+        return Response(serialized_locations.data)
+
+
+class GalleryViewForAutocomplete(APIView):
+    @extend_schema(request=None, responses=GallerySerializer)
+    def get(self, request):
+        query = request.query_params.get('query', None)
+        if query:
+            locations = Gallery.objects.filter(Q(name__icontains=query) | Q(theme__icontains=query) | Q(
+                name__icontains=query.split()[0], theme__icontains=query.split()[-1]) | Q(
+                name__icontains=query.split()[-1], theme__icontains=query.split()[0]))[:10]
+        else:
+            locations = Gallery.objects.all()[:10]
+
+        serialized_locations = GallerySerializer(locations, many=True)
+        return Response(serialized_locations.data)
+
+
+class AuthorViewForAutocomplete(APIView):
+    @extend_schema(request=None, responses=AuthorSerializer)
+    def get(self, request):
+        query = request.query_params.get('query', None)
+        if query:
+            locations = Author.objects.filter(Q(name__icontains=query) | Q(date_birth__icontains=query) | Q(
+                name__icontains=query.split()[0], date_birth__icontains=query.split()[-1]) | Q(
+                name__icontains=query.split()[-1], date_birth__icontains=query.split()[0]))[:10]
+        else:
+            locations = Author.objects.all()[:10]
+
+        serialized_locations = AuthorSerializer(locations, many=True)
+        return Response(serialized_locations.data)

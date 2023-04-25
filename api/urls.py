@@ -1,5 +1,7 @@
 from django.urls import path
-from .views import ArtList, ArtDetail, ArtForAuthor, LocationViewForAutocomplete, AuthorFromGalleryDetail, GalleryByAuthor, AuthorDetail, AuthorList, AuthorWithPeriod, LocationList, LocationDetail, GalleryList, GalleryDetail, GalleryAuthorList, GalleryAuthorDetail
+from .views import ArtList, ArtDetail, ArtForAuthor, LocationViewForAutocomplete, AuthorViewForAutocomplete, \
+    GalleryViewForAutocomplete, AuthorFromGalleryDetail, GalleryByAuthor, AuthorDetail, AuthorList, AuthorWithPeriod,\
+    LocationList, LocationDetail, GalleryList, GalleryDetail, GalleryAuthorList, GalleryAuthorDetail
 from .controller import ArtbyYear, LocationFilter
 from api import views
 
@@ -20,5 +22,7 @@ urlpatterns = [
     path('galleryauthor/<int:pk>/', GalleryAuthorDetail.as_view()),
     path('art-filter/', ArtbyYear.as_view()),
     path('location-filter/', LocationFilter.as_view()),
-    path("locations/autocomplete/<int:pk>/", LocationViewForAutocomplete.as_view()),
+    path("locations/autocomplete/", LocationViewForAutocomplete.as_view()),
+    path("gallery/autocomplete/", GalleryViewForAutocomplete.as_view()),
+    path("author/autocomplete/", AuthorViewForAutocomplete.as_view()),
 ]

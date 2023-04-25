@@ -62,7 +62,7 @@ export const ArtEdit = () => {
         <Container>
             <Card>
                 <CardContent>
-                    <IconButton component={Link} sx={{mr: 3}} to={`/gallery/`}>
+                    <IconButton component={Link} sx={{mr: 3}} to={`/art/`}>
                         <ArrowBackIcon/>
                     </IconButton>{" "}
                     <form onSubmit={updateGallery} style={{display: "flex", flexDirection: "column", padding: "8px"}}>

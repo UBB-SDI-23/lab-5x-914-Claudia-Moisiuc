@@ -1,7 +1,7 @@
 import {useCallback, useEffect, useState} from "react";
 import {BACKEND_API_URL} from "../../constants";
 import axios from "axios";
-import { Button, Card, CardContent, IconButton, TextField} from "@mui/material";
+import {Autocomplete, Button, Card, CardContent, IconButton, TextField} from "@mui/material";
 import {Container} from "@mui/system";
 import {Link, useNavigate} from "react-router-dom";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
@@ -20,38 +20,44 @@ export const GalleryAdd = () => {
         street: "",
         capacity: 0,
         location_id: 1,
-        location:1
+        location: 1
     });
 
     const [locations, setLocations] = useState<Location[]>([]);
+    const [lastGetLocationsCall, setLastGetLocationsCall] = useState<number>(0);
 
-	const fetchSuggestions = async (query: string) => {
-		try {
-			const response = await axios.get<Location[]>(
-				`${BACKEND_API_URL}/location/autocomplete/?query=${query}/`
-			);
-			const data = await response.data;
-			setLocations(data);
-		} catch (error) {
-			console.error("Error fetching suggestions:", error);
-		}
-	};
+    const fetchSuggestions = async (query: string) => {
+        try {
+            const currentLastGetAuthorsCall = lastGetLocationsCall;
+            setLastGetLocationsCall((prev) => prev + 1);
+            console.log("giees");
+            console.log(query);
+            const response = await axios.get(
+                `${BACKEND_API_URL}/locations/autocomplete/?query=${query}`
+            );
+            const data = await response.data;
 
-	const debouncedFetchSuggestions = useCallback(debounce(fetchSuggestions, 500), []);
+            if (currentLastGetAuthorsCall === lastGetLocationsCall) setLocations(data);
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    const debouncedFetchSuggestions = useCallback(debounce(fetchSuggestions, 100), []);
 
     useEffect(() => {
-		return () => {
-			debouncedFetchSuggestions.cancel();
-		};
-	}, [debouncedFetchSuggestions]);
+        return () => {
+            debouncedFetchSuggestions.cancel();
+        };
+    }, [debouncedFetchSuggestions]);
 
     const handleInputChange = (event: any, value: any, reason: any) => {
-		console.log("input", value, reason);
+        console.log("input", value, reason);
 
-		if (reason === "input") {
-			debouncedFetchSuggestions(value);
-		}
-	};
+        if (reason === "input") {
+            debouncedFetchSuggestions(value);
+        }
+    };
 
     const addGallery = async (event: { preventDefault: () => void }) => {
         event.preventDefault();
@@ -98,37 +104,44 @@ export const GalleryAdd = () => {
                         />
 
                         <TextField
-							id="capacity"
-							label="Capacity"
-							variant="outlined"
-							fullWidth
-							sx={{ mb: 2 }}
-							onChange={(event) => setGallery({ ...gallery, capacity: parseInt(event.target.value) })}
-						/>
+                            id="capacity"
+                            label="Capacity"
+                            variant="outlined"
+                            fullWidth
+                            sx={{mb: 2}}
+                            onChange={(event) => setGallery({...gallery, capacity: parseInt(event.target.value)})}
+                        />
 
-                        <TextField
-							id="location"
-							label="Location"
-							variant="outlined"
-							fullWidth
-							sx={{ mb: 2 }}
-							onChange={(event) => setGallery({ ...gallery, location: parseInt(event.target.value) })}
-						/>
+                        {/*<TextField*/}
+                        {/*	id="location"*/}
+                        {/*	label="Location"*/}
+                        {/*	variant="outlined"*/}
+                        {/*	fullWidth*/}
+                        {/*	sx={{ mb: 2 }}*/}
+                        {/*	onChange={(event) => setGallery({ ...gallery, location: parseInt(event.target.value) })}*/}
+                        {/*/>*/}
 
-                        {/*<Autocomplete*/}
-						{/*	id="location_id"*/}
-						{/*	options={locations}*/}
-						{/*	getOptionLabel={(option) => `${option.city} - ${option.country}`}*/}
-						{/*	renderInput={(params) => <TextField {...params} label="Location" variant="outlined" />}*/}
-						{/*	filterOptions={(x) => x}*/}
-						{/*	onInputChange={handleInputChange}*/}
-						{/*	onChange={(event, value) => {*/}
-						{/*		if (value) {*/}
-						{/*			console.log(value);*/}
-						{/*			setGallery({ ...gallery, location_id: value.id });*/}
-						{/*		}*/}
-						{/*	}}*/}
-						{/*/>*/}
+
+                        <Autocomplete
+                            disableClearable={true}
+                            options={locations}
+                            filterOptions={(x) => x}
+                            getOptionLabel={(option) =>
+                                option.city + " " + option.country
+                            }
+                            onInputChange={(e, value) => debouncedFetchSuggestions(value)}
+                            renderInput={(params) => (
+                                <TextField {...params} label="Location" variant="outlined"/>
+                            )}
+                            onChange={(e, value) => {
+                                if (value) {
+                                    console.log(value.id);
+                                    setGallery({...gallery, location: value.id});
+                                }
+                            }}
+                            disablePortal
+                            className="autocomplete-blend"
+                        />
 
                         <Button type="submit">Add Gallery</Button>
                     </form>

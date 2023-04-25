@@ -56,27 +56,27 @@ export const GalleryAuthorEdit = () => {
                         <ArrowBackIcon />
                     </IconButton>{" "}
                     <form onSubmit={updateGallery} style={{ display: "flex", flexDirection: "column", padding: "8px" }}>
-                        <Container sx={{ padding: "3px" }} style={{ display: "flex", flexDirection: "row", justifyContent: "space-around" }}>
-                            <FormLabel style={{ marginTop: "15px", fontSize: "18px" }}>
-                                Author*
-                            </FormLabel>
-                            <TextField
-                                id="author"
-                                variant="outlined"
-                                onChange={(event) => setGalleryAuthor({ ...galleryauthor, author: parseInt(event.target.value) })}
-                            />
-                        </Container>
+                        {/*<Container sx={{ padding: "3px" }} style={{ display: "flex", flexDirection: "row", justifyContent: "space-around" }}>*/}
+                        {/*    <FormLabel style={{ marginTop: "15px", fontSize: "18px" }}>*/}
+                        {/*        Author**/}
+                        {/*    </FormLabel>*/}
+                        {/*    <TextField*/}
+                        {/*        id="author"*/}
+                        {/*        variant="outlined"*/}
+                        {/*        onChange={(event) => setGalleryAuthor({ ...galleryauthor, author: parseInt(event.target.value) })}*/}
+                        {/*    />*/}
+                        {/*</Container>*/}
 
-                        <Container sx={{ padding: "3px" }} style={{ display: "flex", flexDirection: "row", justifyContent: "space-around" }}>
-                            <FormLabel style={{ marginTop: "15px", fontSize: "18px" }}>
-                                Gallery*
-                            </FormLabel>
-                            <TextField
-                                id="gallery"
-                                variant="outlined"
-                                onChange={(event) => setGalleryAuthor({ ...galleryauthor, gallery: parseInt(event.target.value) })}
-                            />
-                        </Container>
+                        {/*<Container sx={{ padding: "3px" }} style={{ display: "flex", flexDirection: "row", justifyContent: "space-around" }}>*/}
+                        {/*    <FormLabel style={{ marginTop: "15px", fontSize: "18px" }}>*/}
+                        {/*        Gallery**/}
+                        {/*    </FormLabel>*/}
+                        {/*    <TextField*/}
+                        {/*        id="gallery"*/}
+                        {/*        variant="outlined"*/}
+                        {/*        onChange={(event) => setGalleryAuthor({ ...galleryauthor, gallery: parseInt(event.target.value) })}*/}
+                        {/*    />*/}
+                        {/*</Container>*/}
 
                         <Container sx={{ padding: "3px" }} style={{ display: "flex", flexDirection: "row", justifyContent: "space-around" }}>
                             <FormLabel style={{ marginTop: "15px", fontSize: "18px" }}>

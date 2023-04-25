@@ -70,8 +70,8 @@ class GalleryAuthorSerializer(serializers.ModelSerializer):
 
 
 class GalleryAuthorSerializerList(serializers.ModelSerializer):
-    author = AuthorSerializerList()
-    gallery = GallerySerializerList()
+    author = AuthorSerializerList(read_only=True)
+    gallery = GallerySerializerList(read_only=True)
 
     class Meta:
         model = GalleryAuthor
