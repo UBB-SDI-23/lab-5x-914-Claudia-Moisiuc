@@ -73,7 +73,7 @@ export const GalleryShowAll = () => {
                                     <TableCell align="center">{gallery.theme}</TableCell>
                                     <TableCell align="center">{gallery.street}</TableCell>
                                     <TableCell align="center">{gallery.capacity}</TableCell>
-                                    <TableCell align="center">{gallery.location}</TableCell>
+                                    <TableCell align="center">{gallery.location?.toString()}</TableCell>
                                     <TableCell align="right">
                                         <IconButton
                                             sx={{mr: 3}}

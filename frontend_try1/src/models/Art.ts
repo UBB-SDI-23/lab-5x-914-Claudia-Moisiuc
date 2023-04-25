@@ -8,5 +8,5 @@ export interface Art{
     year: number;
     type: string;
     material: string;
-    gallery: number | Gallery;
+    gallery: Gallery | number;
 }

@@ -71,8 +71,8 @@ export const GalleryAuthorShowAll = () => {
                             {galleries_authors.map((gallery_author: GalleryAuthor, index) => (
                                 <tr key={index}>
                                     <TableCell align="center">{index}</TableCell>
-                                    <TableCell align="center">{gallery_author.author}</TableCell>
-                                    <TableCell align="center">{gallery_author.gallery}</TableCell>
+                                    <TableCell align="center">{gallery_author.author.toString()}</TableCell>
+                                    <TableCell align="center">{gallery_author.gallery.toString()}</TableCell>
                                     <TableCell align="center">{gallery_author.starting_exposition}</TableCell>
                                     <TableCell align="center">{gallery_author.ending_exposition}</TableCell>
                                     <TableCell align="center">{gallery_author.nb_participants}</TableCell>
