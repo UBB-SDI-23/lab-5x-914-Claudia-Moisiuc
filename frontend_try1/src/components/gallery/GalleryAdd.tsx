@@ -64,6 +64,7 @@ export const GalleryAdd = () => {
         try {
             await axios.post(`${BACKEND_API_URL}/gallery/`, gallery);
             navigate("/gallery");
+            console.log(gallery);
         } catch (error) {
             console.log(error);
         }
