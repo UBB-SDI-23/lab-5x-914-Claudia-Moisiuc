@@ -9,30 +9,48 @@ import {
     TableCell,
     TableBody,
     IconButton,
-    Tooltip,
+    Tooltip, Box,
 } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import ReadMoreIcon from "@mui/icons-material/ReadMore";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import {Art} from "../../models/Art";
+import axios from "axios";
+import NavigateBeforeIcon from "@mui/icons-material/NavigateBefore";
+import NavigateNextIcon from "@mui/icons-material/NavigateNext";
+
 
 export const ArtShowAll = () => {
     const [loading, setLoading] = useState(false);
     const [arts, setArt] = useState<Art[]>([]);
+    const [refreshUsers, setRefreshUsers] = useState(false);
+    const [pageNumber, setPageNumber] = useState<number>(1);
+    const itemsPerPage = 25;
+
 
     useEffect(() => {
-        fetch(`${BACKEND_API_URL}/art/`)
-            .then((response) => response.json())
-            .then((data) => {
-                console.log(data);
-                setArt(data);
-            });
-    }, []);
+        setLoading(true);
+        setRefreshUsers(false);
+        axios.get(`${BACKEND_API_URL}/art?page=${pageNumber}`)
+            .then((response) => {
+                setArt(response.data);
+                setLoading(false);
+            })
+            .catch((error) => console.log(error));
+    }, [refreshUsers, pageNumber]);
 
     if (arts.length == 0) {
         return <div>No arts</div>;
     }
+
+     const handleOnPreviousPage = () => {
+        setPageNumber(pageNumber - 1);
+    };
+
+    const handleOnNextPage = () => {
+        setPageNumber(pageNumber + 1);
+    };
 
     return (
         <div>
@@ -51,6 +69,7 @@ export const ArtShowAll = () => {
                 </IconButton>
             )}
             {!loading && arts.length > 0 && (
+                <>
                 <TableContainer component={Paper}>
                     <Table sx={{minWidth: 650}} aria-label="simple table">
 
@@ -68,8 +87,8 @@ export const ArtShowAll = () => {
                         </TableHead>
                         <TableBody>
                             {arts.map((art: Art, index) => (
-                                <tr key={index}>
-                                    <TableCell align="center">{index}</TableCell>
+                                <tr>
+                                    <TableCell align="center">{art.id}</TableCell>
                                     <TableCell align="center">{art.title}</TableCell>
                                     <TableCell align="center">{art.author.toString()}</TableCell>
                                     <TableCell align="center">{art.year}</TableCell>
@@ -111,6 +130,15 @@ export const ArtShowAll = () => {
                         </TableBody>
                     </Table>
                 </TableContainer>
+                <Box sx={{mt: 2, gap: 1}}>
+                        <IconButton disabled={pageNumber == 1} onClick={handleOnPreviousPage}>
+                            <NavigateBeforeIcon color={"primary"} fontSize={"large"}/>
+                        </IconButton>
+                        <IconButton onClick={handleOnNextPage}>
+                            <NavigateNextIcon color={"primary"} fontSize={"large"}/>
+                        </IconButton>
+                    </Box>
+                </>
             )}
         </div>
     );

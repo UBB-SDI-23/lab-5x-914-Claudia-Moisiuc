@@ -10,29 +10,45 @@ import {
     TableCell,
     TableBody,
     IconButton,
-    Tooltip,
+    Tooltip, Box,
 } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import ReadMoreIcon from "@mui/icons-material/ReadMore";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
+import axios from "axios";
+import NavigateBeforeIcon from "@mui/icons-material/NavigateBefore";
+import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 
 export const LocationShowAll = () => {
     const [loading, setLoading] = useState(false);
     const [locations, setLocation] = useState<Location[]>([]);
+    const [refreshUsers, setRefreshUsers] = useState(false);
+    const [pageNumber, setPageNumber] = useState<number>(1);
+    const itemsPerPage = 25;
 
     useEffect(() => {
-        fetch(`${BACKEND_API_URL}/locations/`)
-            .then((response) => response.json())
-            .then((data) => {
-                console.log(data);
-                setLocation(data);
-            });
-    }, []);
+        setLoading(true);
+        setRefreshUsers(false);
+        axios.get(`${BACKEND_API_URL}/locations?page=${pageNumber}`)
+            .then((response) => {
+                setLocation(response.data);
+                setLoading(false);
+            })
+            .catch((error) => console.log(error));
+    }, [refreshUsers, pageNumber]);
 
     if (locations.length == 0) {
         return <div>No locations</div>;
     }
+
+    const handleOnPreviousPage = () => {
+        setPageNumber(pageNumber - 1);
+    };
+
+    const handleOnNextPage = () => {
+        setPageNumber(pageNumber + 1);
+    };
 
     return (
         <div>
@@ -51,6 +67,7 @@ export const LocationShowAll = () => {
                 </IconButton>
             )}
             {!loading && locations.length > 0 && (
+                <>
                 <TableContainer component={Paper}>
                     <Table sx={{minWidth: 650}} aria-label="simple table">
                         <TableHead>
@@ -63,9 +80,9 @@ export const LocationShowAll = () => {
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {locations.map((location: Location, index) => (
-                                <tr key={index}>
-                                    <TableCell align="center">{index}</TableCell>
+                            {locations.map((location: Location) => (
+                                <tr>
+                                    <TableCell align="center">{location.id}</TableCell>
                                     <TableCell align="center">{location.country}</TableCell>
                                     <TableCell align="center">{location.city}</TableCell>
                                     <TableCell align="center">{location.to_visit}</TableCell>
@@ -104,7 +121,17 @@ export const LocationShowAll = () => {
                         </TableBody>
                     </Table>
                 </TableContainer>
+                <Box sx={{mt: 2, gap: 1}}>
+                        <IconButton disabled={pageNumber == 1} onClick={handleOnPreviousPage}>
+                            <NavigateBeforeIcon color={"primary"} fontSize={"large"}/>
+                        </IconButton>
+                        <IconButton onClick={handleOnNextPage}>
+                            <NavigateNextIcon color={"primary"} fontSize={"large"}/>
+                        </IconButton>
+                    </Box>
+                </>
             )}
         </div>
     );
 };
+

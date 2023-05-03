@@ -13,11 +13,24 @@ from .serializers import GalleryAuthorSerializer, GalleryAuthorSerializerList, A
     GalleryNbAuthors, GalleryForAuthorSerializerList
 from .serializers import ArtForAuthorSerializer
 from django.db.models import Q
+from django.core.paginator import Paginator
+
 
 
 class GalleryAuthorList(generics.ListCreateAPIView):
-    queryset = GalleryAuthor.objects.all()
     serializer_class = GalleryAuthorSerializer
+
+    def get_queryset(self):
+        queryset = GalleryAuthor.objects.all()
+
+        page_number = self.request.query_params.get('page')
+
+        if page_number:
+            paginator = Paginator(queryset, 25)
+            page_obj = paginator.get_page(page_number)
+            queryset = page_obj.object_list
+
+        return queryset
 
 
 class GalleryAuthorDetail(generics.RetrieveUpdateDestroyAPIView):
@@ -26,8 +39,24 @@ class GalleryAuthorDetail(generics.RetrieveUpdateDestroyAPIView):
 
 
 class ArtList(generics.ListCreateAPIView):
-    queryset = Art.objects.all()
     serializer_class = ArtSerializerList
+
+    def get_queryset(self):
+        queryset = Art.objects.all()
+
+        page_number = self.request.query_params.get('page')
+
+        title = self.request.query_params.get('title')
+
+        if title:
+            queryset = Location.objects.filter(title__icontains=title)
+
+        if page_number:
+            paginator = Paginator(queryset, 25)
+            page_obj = paginator.get_page(page_number)
+            queryset = page_obj.object_list
+
+        return queryset
 
 
 class ArtDetail(generics.RetrieveUpdateDestroyAPIView):
@@ -36,8 +65,24 @@ class ArtDetail(generics.RetrieveUpdateDestroyAPIView):
 
 
 class AuthorList(generics.ListCreateAPIView):
-    queryset = Author.objects.all()
     serializer_class = AuthorSerializerList
+
+    def get_queryset(self):
+        queryset = Author.objects.all()
+
+        page_number = self.request.query_params.get('page')
+
+        name = self.request.query_params.get('name')
+
+        if name:
+            queryset = Location.objects.filter(name__icontains=name)
+
+        if page_number:
+            paginator = Paginator(queryset, 25)
+            page_obj = paginator.get_page(page_number)
+            queryset = page_obj.object_list
+
+        return queryset
 
 
 class ArtForAuthor(views.APIView):
@@ -57,8 +102,24 @@ class AuthorDetail(generics.RetrieveUpdateDestroyAPIView):
 
 
 class GalleryList(generics.ListCreateAPIView):
-    queryset = Gallery.objects.all()
     serializer_class = GallerySerializerList
+
+    def get_queryset(self):
+        queryset = Gallery.objects.all()
+
+        page_number = self.request.query_params.get('page')
+
+        name = self.request.query_params.get('name')
+
+        if name:
+            queryset = Location.objects.filter(name__icontains=name)
+
+        if page_number:
+            paginator = Paginator(queryset, 25)
+            page_obj = paginator.get_page(page_number)
+            queryset = page_obj.object_list
+
+        return queryset
 
 
 class GalleryDetail(generics.RetrieveUpdateDestroyAPIView):
@@ -67,8 +128,24 @@ class GalleryDetail(generics.RetrieveUpdateDestroyAPIView):
 
 
 class LocationList(generics.ListCreateAPIView):
-    queryset = Location.objects.all()
     serializer_class = LocationSerializerList
+
+    def get_queryset(self):
+        queryset = Location.objects.all()
+
+        page_number = self.request.query_params.get('page')
+
+        country = self.request.query_params.get('country')
+
+        if country:
+            queryset = Location.objects.filter(country__icontains=country)
+
+        if page_number:
+            paginator = Paginator(queryset, 25)
+            page_obj = paginator.get_page(page_number)
+            queryset = page_obj.object_list
+
+        return queryset
 
 
 class LocationDetail(generics.RetrieveUpdateDestroyAPIView):
