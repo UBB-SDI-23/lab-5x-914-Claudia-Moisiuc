@@ -10,3 +10,4 @@ export interface Art{
     material: string;
     gallery: Gallery | number;
 }
+

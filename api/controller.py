@@ -4,6 +4,7 @@ from .models import Art, Location
 from .serializers import ArtSerializer, LocationSerializer
 
 
+
 class ArtbyYear(generics.ListCreateAPIView):
     serializer_class = ArtSerializer
 

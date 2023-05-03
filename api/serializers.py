@@ -63,6 +63,7 @@ class ArtSerializer(serializers.ModelSerializer):
         fields = ['id', 'title', 'author', 'year', 'type', 'material', 'gallery', 'author']
 
 
+
 class GalleryAuthorSerializer(serializers.ModelSerializer):
     class Meta:
         model = GalleryAuthor

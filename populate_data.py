@@ -225,3 +225,4 @@ if __name__ == '__main__':
     gallery_author_insert_data()
 
     # art_insert_data()
+

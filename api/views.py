@@ -17,6 +17,7 @@ from django.core.paginator import Paginator
 
 
 
+
 class GalleryAuthorList(generics.ListCreateAPIView):
     serializer_class = GalleryAuthorSerializer
 

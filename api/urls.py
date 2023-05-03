@@ -5,6 +5,7 @@ from .views import ArtList, ArtDetail, ArtForAuthor, LocationViewForAutocomplete
 from .controller import ArtbyYear, LocationFilter
 from api import views
 
+
 urlpatterns = [
     path('art/', ArtList.as_view()),
     path('art/<int:pk>/', ArtDetail.as_view()),

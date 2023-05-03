@@ -5,6 +5,7 @@ from rest_framework import status
 from api.models import Art, Location, Gallery, Author, GalleryAuthor
 
 
+
 class ArtByYearTest(APITestCase):
     def setUp(self):
         self.location = Location.objects.create(id=1, country='c1', city='c2')
